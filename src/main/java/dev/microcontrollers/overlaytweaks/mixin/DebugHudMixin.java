@@ -1,6 +1,6 @@
 package dev.microcontrollers.overlaytweaks.mixin;
 
-import com.llamalad7.mixinextras.injector.WrapWithCondition;
+import com.llamalad7.mixinextras.injector.v2.WrapWithCondition;
 import dev.microcontrollers.overlaytweaks.config.OverlayTweaksConfig;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.gui.hud.DebugHud;

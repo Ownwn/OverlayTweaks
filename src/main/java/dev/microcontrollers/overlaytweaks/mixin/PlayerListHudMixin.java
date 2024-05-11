@@ -59,7 +59,7 @@ public class PlayerListHudMixin {
     }
 
     @ModifyConstant(method = "collectPlayerEntries", constant = @Constant(longValue = 80L))
-    public long increasePlayerCount(long constant) {
+    private long increasePlayerCount(long constant) {
         return OverlayTweaksConfig.CONFIG.instance().maxTabPlayers;
     }
 

@@ -1,6 +1,6 @@
 package dev.microcontrollers.overlaytweaks.mixin;
 
-import com.llamalad7.mixinextras.injector.WrapWithCondition;
+import com.llamalad7.mixinextras.injector.v2.WrapWithCondition;
 import dev.microcontrollers.overlaytweaks.config.OverlayTweaksConfig;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.network.ClientPlayerEntity;
@@ -17,7 +17,7 @@ import org.spongepowered.asm.mixin.injection.invoke.arg.Args;
 @Mixin(HeldItemRenderer.class)
 public class HeldItemRendererMixin {
     @ModifyArgs(method = "renderItem(FLnet/minecraft/client/util/math/MatrixStack;Lnet/minecraft/client/render/VertexConsumerProvider$Immediate;Lnet/minecraft/client/network/ClientPlayerEntity;I)V", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/render/item/HeldItemRenderer;renderFirstPersonItem(Lnet/minecraft/client/network/AbstractClientPlayerEntity;FFLnet/minecraft/util/Hand;FLnet/minecraft/item/ItemStack;FLnet/minecraft/client/util/math/MatrixStack;Lnet/minecraft/client/render/VertexConsumerProvider;I)V"))
-    public void lowerShieldPosition(Args args) {
+    private void lowerShieldPosition(Args args) {
         ClientPlayerEntity player = MinecraftClient.getInstance().player;
         assert player != null;
         if (player.getMainHandStack().isOf(Items.SHIELD) && args.get(3).equals(Hand.MAIN_HAND)) {
@@ -28,7 +28,7 @@ public class HeldItemRendererMixin {
     }
 
     @WrapWithCondition(method = "renderItem(FLnet/minecraft/client/util/math/MatrixStack;Lnet/minecraft/client/render/VertexConsumerProvider$Immediate;Lnet/minecraft/client/network/ClientPlayerEntity;I)V", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/util/math/MatrixStack;multiply(Lorg/joml/Quaternionf;)V"))
-    public boolean removeHandSway(MatrixStack instance, Quaternionf quaternion) {
+    private boolean removeHandSway(MatrixStack instance, Quaternionf quaternion) {
         return !OverlayTweaksConfig.CONFIG.instance().disableHandViewSway;
     }
 

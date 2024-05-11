@@ -9,7 +9,9 @@ import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.ModifyArg;
+import org.spongepowered.asm.mixin.injection.ModifyArgs;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
+import org.spongepowered.asm.mixin.injection.invoke.arg.Args;
 
 import static net.minecraft.entity.effect.StatusEffects.FIRE_RESISTANCE;
 
@@ -51,7 +53,14 @@ public class InGameOverlayRendererMixin {
 
     @ModifyArg(method = "renderFireOverlay", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/render/VertexConsumer;color(FFFF)Lnet/minecraft/client/render/VertexConsumer;"), index = 3)
     private static float enableFireOverlayOpacity(float opacity) {
-        return OverlayTweaksConfig.CONFIG.instance().customFireOverlayOpacity / 100;
+        return OverlayTweaksConfig.CONFIG.instance().customFireOverlayOpacity / 100F;
+    }
+
+    @ModifyArgs(method = "renderInWallOverlay", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/render/VertexConsumer;color(FFFF)Lnet/minecraft/client/render/VertexConsumer;"))
+    private static void changeSuffocationOverlayColor(Args args) {
+        args.set(0, OverlayTweaksConfig.CONFIG.instance().suffocationOverlayBrightness / 100F);
+        args.set(1, OverlayTweaksConfig.CONFIG.instance().suffocationOverlayBrightness / 100F);
+        args.set(2, OverlayTweaksConfig.CONFIG.instance().suffocationOverlayBrightness / 100F);
     }
 
 }

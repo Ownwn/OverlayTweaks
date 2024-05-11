@@ -46,7 +46,7 @@ public class OverlayTweaksConfig {
     @SerialEntry public boolean disableScreenDamage = false;
     @SerialEntry public boolean disableHandDamage = false;
     @SerialEntry public boolean disableHandViewSway = false;
-    @SerialEntry public float tabBackgroundOpacity = 100F;
+    @SerialEntry public float suffocationOverlayBrightness = 10F;
 
     // HUD
 
@@ -56,6 +56,7 @@ public class OverlayTweaksConfig {
     @SerialEntry public Color shieldColorHigh = new Color(1F, 0F, 0F);
     @SerialEntry public Color shieldColorMid = new Color(0.75F, 0.37F, 0.2F);
     @SerialEntry public Color shieldColorLow = new Color(1F, 1F, 0F);
+    @SerialEntry public boolean disableTotemOverlay = false;
     @SerialEntry public boolean removeWaterOverlay = true;
     @SerialEntry public boolean removeWaterFov = true;
     @SerialEntry public boolean removeFireOverlay = true;
@@ -90,18 +91,22 @@ public class OverlayTweaksConfig {
     // Effects
 
     @SerialEntry public boolean potionGlint = false;
-    @SerialEntry public boolean removeBookGlint = false;
     @SerialEntry public boolean staticItems = false;
     @SerialEntry public boolean unstackedItems = false;
     @SerialEntry public boolean cleanerNightVision = true;
     @SerialEntry public boolean cleanerSkyDarkness = true;
-    @SerialEntry public boolean removeElderGuardianJumpscare = false;
+    @SerialEntry public Color lightningColor = new Color(0.45F, 0.45F, 0.5F, 0.3F);
+    @SerialEntry public Color worldBorderColor = new Color(1F, 1F, 1F, 1F);
+    @SerialEntry public float elderGuardianOpacity = 100F;
+    @SerialEntry public float elderGuardianScale = 1F;
     @SerialEntry public float horseOpacity = 100F;
     @SerialEntry public float pigOpacity = 100F;
     @SerialEntry public float striderOpacity = 100F;
     @SerialEntry public float camelOpacity = 100F;
     @SerialEntry public float pumpkinOpacity = 100F;
     @SerialEntry public float freezingOpacity = 100F;
+    @SerialEntry public float spyglassOpacity = 100F;
+    @SerialEntry public Color spyglassColor = new Color(-16777216);
     @SerialEntry public boolean customVignetteDarkness = false;
     @SerialEntry public float customVignetteDarknessValue = 0F;
 
@@ -272,14 +277,14 @@ public class OverlayTweaksConfig {
                                         .build())
                                 .build())
 
-                        // GUIs
+                        // Suffocation Overlay
 
                         .group(OptionGroup.createBuilder()
-                                .name(Text.literal("Tab Background Opacity"))
+                                .name(Text.literal("Suffocation Overlay Opacity"))
                                 .option(Option.createBuilder(float.class)
-                                        .name(Text.literal("Change Tab Background Opacity"))
+                                        .name(Text.literal("Change Suffocation Overlay Brightness"))
                                         .description(OptionDescription.of(Text.of("Replaces the black bar background in tab navigation screens. Use 60% for a value similar to Benonardo's standalone mod.")))
-                                        .binding(100F, () -> config.tabBackgroundOpacity, newVal -> config.tabBackgroundOpacity = newVal)
+                                        .binding(10F, () -> config.suffocationOverlayBrightness, newVal -> config.suffocationOverlayBrightness = newVal)
                                         .controller(opt -> FloatSliderControllerBuilder.create(opt)
                                                 .valueFormatter(value -> Text.of(String.format("%,.0f", value)))
                                                 .range(0F, 100F)
@@ -335,6 +340,18 @@ public class OverlayTweaksConfig {
                                         .name(Text.literal("Shield Color Low"))
                                         .binding(defaults.shieldColorLow, () -> config.shieldColorLow, value -> config.shieldColorLow = value)
                                         .customController(opt -> new ColorController(opt, false))
+                                        .build())
+                                .build())
+
+                        // Totem
+
+                        .group(OptionGroup.createBuilder()
+                                .name(Text.literal("Totem"))
+                                .option(Option.createBuilder(boolean.class)
+                                        .name(Text.literal("Disable Totem Overlay"))
+                                        .description(OptionDescription.of(Text.of("Removes the totem overlay from your screen.")))
+                                        .binding(defaults.disableTotemOverlay, () -> config.disableTotemOverlay, newVal -> config.disableTotemOverlay = newVal)
+                                        .controller(TickBoxControllerBuilder::create)
                                         .build())
                                 .build())
 
@@ -586,12 +603,6 @@ public class OverlayTweaksConfig {
                                         .controller(TickBoxControllerBuilder::create)
                                         .build())
                                 .option(Option.createBuilder(boolean.class)
-                                        .name(Text.literal("Disable Enchanted Book Glint"))
-                                        .description(OptionDescription.of(Text.of("Remove the glint effect from enchanted books.")))
-                                        .binding(defaults.removeBookGlint, () -> config.removeBookGlint, newVal -> config.removeBookGlint = newVal)
-                                        .controller(TickBoxControllerBuilder::create)
-                                        .build())
-                                .option(Option.createBuilder(boolean.class)
                                         .name(Text.literal("Static Items"))
                                         .description(OptionDescription.of(Text.of("Remove the bobbing of items dropped on the ground.")))
                                         .binding(defaults.staticItems, () -> config.staticItems, newVal -> config.staticItems = newVal)
@@ -621,11 +632,35 @@ public class OverlayTweaksConfig {
                                         .binding(defaults.cleanerSkyDarkness, () -> config.cleanerSkyDarkness, newVal -> config.cleanerSkyDarkness = newVal)
                                         .controller(TickBoxControllerBuilder::create)
                                         .build())
-                                .option(Option.createBuilder(boolean.class)
-                                        .name(Text.literal("Remove Elder Guardian Jumpscare"))
-                                        .description(OptionDescription.of(Text.of("Removes the elder guardian particle effect from showing on your screen.")))
-                                        .binding(defaults.removeElderGuardianJumpscare, () -> config.removeElderGuardianJumpscare, newVal -> config.removeElderGuardianJumpscare = newVal)
-                                        .controller(TickBoxControllerBuilder::create)
+                                .option(Option.<Color>createBuilder()
+                                        .name(Text.literal("Change Lightning Color"))
+                                        .description(OptionDescription.of(Text.of("Change the color of lightning bolts.")))
+                                        .binding(defaults.lightningColor, () -> config.lightningColor, value -> config.lightningColor = value)
+                                        .customController(opt -> new ColorController(opt, true))
+                                        .build())
+                                .option(Option.<Color>createBuilder()
+                                        .name(Text.literal("World Border Color"))
+                                        .description(OptionDescription.of(Text.of("Allows setting a custom color for the world border.")))
+                                        .binding(defaults.worldBorderColor, () -> config.worldBorderColor, value -> config.worldBorderColor = value)
+                                        .customController(opt -> new ColorController(opt, true))
+                                        .build())
+                                .option(Option.createBuilder(float.class)
+                                        .name(Text.literal("Change Elder Guardian Opacity"))
+                                        .description(OptionDescription.of(Text.of("Changes the opacity of the elder guardian particle effect from showing on your screen.")))
+                                        .binding(100F, () -> config.elderGuardianOpacity, newVal -> config.elderGuardianOpacity = newVal)
+                                        .controller(opt -> FloatSliderControllerBuilder.create(opt)
+                                                .valueFormatter(value -> Text.of(String.format("%,.0f", value) + "%"))
+                                                .range(0F, 100F)
+                                                .step(1F))
+                                        .build())
+                                .option(Option.createBuilder(float.class)
+                                        .name(Text.literal("Change Elder Guardian Scale"))
+                                        .description(OptionDescription.of(Text.of("Changes the scale of the elder guardian particle effect from showing on your screen.")))
+                                        .binding(1F, () -> config.elderGuardianScale, newVal -> config.elderGuardianScale = newVal)
+                                        .controller(opt -> FloatSliderControllerBuilder.create(opt)
+                                                .valueFormatter(value -> Text.of(String.format("%,.1f", value) + "%"))
+                                                .range(0.1F, 3F)
+                                                .step(0.1F))
                                         .build())
                                 .option(Option.createBuilder(float.class)
                                         .name(Text.literal("Ridden Horse Opacity"))
@@ -686,6 +721,21 @@ public class OverlayTweaksConfig {
                                                 .valueFormatter(value -> Text.of(String.format("%,.0f", value) + "%"))
                                                 .range(0F, 100F)
                                                 .step(1F))
+                                        .build())
+                                .option(Option.createBuilder(float.class)
+                                        .name(Text.literal("Spyglass Overlay Opacity"))
+                                        .description(OptionDescription.of(Text.of("Changes the opacity of the spyglass overlay.")))
+                                        .binding(100F, () -> config.spyglassOpacity, newVal -> config.spyglassOpacity = newVal)
+                                        .controller(opt -> FloatSliderControllerBuilder.create(opt)
+                                                .valueFormatter(value -> Text.of(String.format("%,.0f", value) + "%"))
+                                                .range(0F, 100F)
+                                                .step(1F))
+                                        .build())
+                                .option(Option.<Color>createBuilder()
+                                        .name(Text.literal("Spyglass Background Color"))
+                                        .description(OptionDescription.of(Text.of("Allows setting a custom color for the background of nametags.")))
+                                        .binding(defaults.spyglassColor, () -> config.spyglassColor, value -> config.spyglassColor = value)
+                                        .customController(opt -> new ColorController(opt, true))
                                         .build())
                                 .option(Option.createBuilder(boolean.class)
                                         .name(Text.literal("Constant Vignette Darkness"))

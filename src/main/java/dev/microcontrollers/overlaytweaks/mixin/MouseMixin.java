@@ -14,32 +14,33 @@ import org.spongepowered.asm.mixin.injection.At;
 @Mixin(Mouse.class)
 public class MouseMixin {
     @ModifyExpressionValue(method = "onMouseButton", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/util/Window;getScaledWidth()I"))
-    public int onMouseButtonWidth(int originalScaledWidth) {
+    private int onMouseButtonWidth(int originalScaledWidth) {
         return (int) (originalScaledWidth / InvScale.getScale());
     }
 
     @ModifyExpressionValue(method = "onMouseButton", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/util/Window;getScaledHeight()I"))
-    public int onMouseButtonHeight(int originalScaledHeight) {
+    private int onMouseButtonHeight(int originalScaledHeight) {
         return (int) (originalScaledHeight / InvScale.getScale());
     }
 
-    @ModifyExpressionValue(method = "onCursorPos", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/util/Window;getScaledWidth()I"))
-    public int onCursorPosWidth(int originalScaledWidth) {
-        return (int) (originalScaledWidth / InvScale.getScale());
-    }
-
-    @ModifyExpressionValue(method = "onCursorPos", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/util/Window;getScaledHeight()I"))
-    public int onCursorPosHeight(int originalScaledHeight) {
-        return (int) (originalScaledHeight / InvScale.getScale());
-    }
+    // TODO: Find what changed
+//    @ModifyExpressionValue(method = "onCursorPos", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/util/Window;getScaledWidth()I"))
+//    private int onCursorPosWidth(int originalScaledWidth) {
+//        return (int) (originalScaledWidth / InvScale.getScale());
+//    }
+//
+//    @ModifyExpressionValue(method = "onCursorPos", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/util/Window;getScaledHeight()I"))
+//    private int onCursorPosHeight(int originalScaledHeight) {
+//        return (int) (originalScaledHeight / InvScale.getScale());
+//    }
 
     @ModifyExpressionValue(method = "onMouseScroll", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/util/Window;getScaledWidth()I"))
-    public int onMouseScrollWidth(int originalScaledWidth) {
+    private int onMouseScrollWidth(int originalScaledWidth) {
         return (int) (originalScaledWidth / InvScale.getScale());
     }
 
     @ModifyExpressionValue(method = "onMouseScroll", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/util/Window;getScaledHeight()I"))
-    public int onMouseScrollHeight(int originalScaledHeight) {
+    private int onMouseScrollHeight(int originalScaledHeight) {
         return (int) (originalScaledHeight / InvScale.getScale());
     }
 

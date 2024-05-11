@@ -1,5 +1,5 @@
 plugins {
-	id 'fabric-loom' version '1.4-SNAPSHOT'
+	id 'fabric-loom' version '1.6-SNAPSHOT'
 }
 
 version = project.mod_version
@@ -24,10 +24,10 @@ loom {
 
 dependencies { // To change the versions see the gradle.properties file
 	// YACL
-	modImplementation("dev.isxander.yacl:yet-another-config-lib-fabric:${project.yaclVersion}")
+	modImplementation("dev.isxander:yet-another-config-lib:${yacl_version}-fabric")
 
 	// Mod Menu
-	modImplementation("com.terraformersmc:modmenu:${project.modMenuVersion}")
+	modImplementation("com.terraformersmc:modmenu:${project.mod_menu_version}")
 
 	// Minecraft/Fabric
 	minecraft "com.mojang:minecraft:${project.minecraft_version}"
@@ -38,7 +38,7 @@ dependencies { // To change the versions see the gradle.properties file
 	modImplementation "net.fabricmc.fabric-api:fabric-api:${project.fabric_version}"
 
 	// DevAuth. Lets us log in with our own Minecraft account. Useful for testing tab features.
-	modRuntimeOnly("me.djtheredstoner:DevAuth-fabric:${project.devauthVersion}")
+	modRuntimeOnly("me.djtheredstoner:DevAuth-fabric:${project.devauth_version}")
 }
 
 processResources {
@@ -50,12 +50,12 @@ processResources {
 }
 
 tasks.withType(JavaCompile).configureEach {
-	it.options.release = 17
+	it.options.release = 21
 }
 
 java {
-	sourceCompatibility = JavaVersion.VERSION_17
-	targetCompatibility = JavaVersion.VERSION_17
+	sourceCompatibility = JavaVersion.VERSION_21
+	targetCompatibility = JavaVersion.VERSION_21
 }
 
 jar {

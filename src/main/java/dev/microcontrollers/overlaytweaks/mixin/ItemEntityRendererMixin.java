@@ -20,7 +20,7 @@ public class ItemEntityRendererMixin {
     }
 
     @ModifyReturnValue(method = "getRenderedAmount", at = @At("RETURN"))
-    private int forceStackAmount(int original) {
+    private static int forceStackAmount(int original) {
         if (OverlayTweaksConfig.CONFIG.instance().unstackedItems) return 1;
         return original;
     }
