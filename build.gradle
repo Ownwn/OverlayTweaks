@@ -1,5 +1,10 @@
 plugins {
-	id 'fabric-loom' version '1.6-SNAPSHOT'
+//	kotlin("jvm")
+	id("org.polyfrost.multi-version")
+	id("org.polyfrost.defaults.repo")
+	id("org.polyfrost.defaults.java")
+	id("org.polyfrost.defaults.loom")
+	id("net.kyori.blossom") version "1.3.2"
 }
 
 version = project.mod_version
@@ -29,10 +34,10 @@ dependencies { // To change the versions see the gradle.properties file
 	// Mod Menu
 	modImplementation("com.terraformersmc:modmenu:${project.mod_menu_version}")
 
-	// Minecraft/Fabric
-	minecraft "com.mojang:minecraft:${project.minecraft_version}"
-	mappings "net.fabricmc:yarn:${project.yarn_mappings}:v2"
-	modImplementation "net.fabricmc:fabric-loader:${project.loader_version}"
+//	// Minecraft/Fabric
+//	minecraft "com.mojang:minecraft:${project.minecraft_version}"
+//	mappings "net.fabricmc:yarn:${project.yarn_mappings}:v2"
+//	modImplementation "net.fabricmc:fabric-loader:${project.loader_version}"
 
 	// Fabric API. Required for YACL
 	modImplementation "net.fabricmc.fabric-api:fabric-api:${project.fabric_version}"
