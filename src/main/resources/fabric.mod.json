@@ -11,7 +11,9 @@
 		"Wyvest",
 		"Mixces",
 		"Ownwn",
-		"Squagward"
+		"Squagward",
+		"nextdayy"
+
 	],
 	"contact": {
 		"homepage": "https://modrinth.com/mod/overlaytweaks",
@@ -42,7 +44,8 @@
 	"custom": {
 		"modmenu": {
 			"links": {
-				"modmenu.discord": "https://discord.gg/rejfv9kFJj"
+				"modmenu.discord": "https://discord.gg/rejfv9kFJj",
+				"modmenu.modrinth": "https://modrinth.com/mod/overlaytweaks"
 			},
 			"update_checker": true
 		}
