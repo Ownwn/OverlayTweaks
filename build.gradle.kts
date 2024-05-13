@@ -21,8 +21,6 @@ repositories {
 }
 
 java {
-	withSourcesJar()
-	withJavadocJar()
 	toolchain {
 		when(platform.mcVersion) {
 			in 12001..12004 -> {

@@ -24,13 +24,21 @@ public class CreativeInventoryScreenMixin {
         RenderSystem.setShaderColor(1F, 1F, 1F, 1F);
     }
 
+    //#if MC >= 1.20.4
     @Inject(method = "renderTabIcon", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/DrawContext;drawGuiTexture(Lnet/minecraft/util/Identifier;IIII)V"))
+    //#else
+    //$$ @Inject(method = "renderTabIcon", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/DrawContext;drawTexture(Lnet/minecraft/util/Identifier;IIIIII)V"))
+    //#endif
     private void containerOpacityStartTab(DrawContext context, ItemGroup group, CallbackInfo ci) {
         RenderSystem.enableBlend();
         RenderSystem.setShaderColor(1F, 1F, 1F, OverlayTweaksConfig.CONFIG.instance().containerTextureOpacity / 100F);
     }
 
+    //#if MC >= 1.20.4
     @Inject(method = "renderTabIcon", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/DrawContext;drawGuiTexture(Lnet/minecraft/util/Identifier;IIII)V", shift = At.Shift.AFTER))
+    //#else
+    //$$ @Inject(method = "renderTabIcon", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/DrawContext;drawTexture(Lnet/minecraft/util/Identifier;IIIIII)V", shift = At.Shift.AFTER))
+    //#endif
     private void containerOpacityEndTab(DrawContext context, ItemGroup group, CallbackInfo ci) {
         RenderSystem.disableBlend();
         RenderSystem.setShaderColor(1F, 1F, 1F, 1F);

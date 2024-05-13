@@ -27,5 +27,4 @@ public class PotionItemMixin extends Item {
         //$$ return OverlayTweaksConfig.CONFIG.instance().potionGlint && !PotionUtil.getPotionEffects(stack).isEmpty();
         //#endif
     }
-
 }

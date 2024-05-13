@@ -1,6 +1,6 @@
 package dev.microcontrollers.overlaytweaks.mixin.screenopacity;
 
-//#if MC >= 1.20.6
+//#if MC >= 1.20.4
 import com.mojang.blaze3d.systems.RenderSystem;
 import dev.microcontrollers.overlaytweaks.config.OverlayTweaksConfig;
 import net.minecraft.client.gui.DrawContext;

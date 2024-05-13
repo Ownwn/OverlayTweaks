@@ -27,19 +27,6 @@ public class OverlayTweaksConfig {
     @SerialEntry public float containerOpacity = (208/255F) * 100F;
     @SerialEntry public float containerTextureOpacity = 100F;
     @SerialEntry public int containerSize = 1;
-    @SerialEntry public int maxTabPlayers = 80;
-    @SerialEntry public Color tabPlayerListColor = new Color(255, 255, 255, 32);
-    @SerialEntry public float moveTabDown = 10F;
-    @SerialEntry public boolean moveTabBelowBossBars = false;
-    @SerialEntry public boolean showPingInTab = false;
-    @SerialEntry public boolean scalePingDisplay = false;
-    @SerialEntry public boolean hideFalsePing = false;
-    @SerialEntry public Color pingColorOne = new Color(-15466667);
-    @SerialEntry public Color pingColorTwo = new Color(-14773218);
-    @SerialEntry public Color pingColorThree = new Color(-4733653);
-    @SerialEntry public Color pingColorFour = new Color(-13779);
-    @SerialEntry public Color pingColorFive = new Color(-6458098);
-    @SerialEntry public Color pingColorSix = new Color(-4318437);
     @SerialEntry public boolean disableScreenBobbing = false;
     @SerialEntry public boolean disableHandBobbing = false;
     @SerialEntry public boolean disableMapBobbing = true;
@@ -66,30 +53,10 @@ public class OverlayTweaksConfig {
     @SerialEntry public double fireOverlayHeight = 0.0;
     @SerialEntry public float customFireOverlayOpacity = 100F;
     @SerialEntry public boolean removeItemTooltip = false;
-    @SerialEntry public boolean hotbarEnchantmentGlance = false;
-    @SerialEntry public Color enchantmentGlanceColor = new Color(16777215);
-    @SerialEntry public boolean hotbarDamageGlance = false;
-    @SerialEntry public Color damageGlanceColor = new Color(16777215);
     @SerialEntry public boolean keepHand = false;
     @SerialEntry public boolean hideScoreboardInDebug = false;
     @SerialEntry public boolean classicDebugStyle = false;
-    @SerialEntry public boolean disableTitles = false;
-    @SerialEntry public float titleScale = 100F;
-    @SerialEntry public boolean autoTitleScale = true;
-    @SerialEntry public float titleOpacity = 100F;
     @SerialEntry public Color subtitleColor = new Color(0F, 0F, 0F, 1F);
-
-    // Crosshair
-
-    @SerialEntry public boolean hideCrosshairInContainers = true;
-    @SerialEntry public boolean showCrosshairInPerspective = false;
-    @SerialEntry public boolean showCrosshairInSpectator = false;
-    @SerialEntry public boolean removeCrosshairBlending = false;
-    @SerialEntry public float crosshairOpacity = 100F;
-    @SerialEntry public boolean useNormalCrosshair = false;
-    @SerialEntry public boolean useDebugCrosshair = false;
-    @SerialEntry public boolean fixDebugCooldown = true;
-    @SerialEntry public int debugCrosshairSize = 10;
 
     // Effects
 
@@ -153,88 +120,6 @@ public class OverlayTweaksConfig {
                                                 .valueFormatter(value -> Text.of(String.format("%01d", value) + "x"))
                                                 .range(1, 4)
                                                 .step(1))
-                                        .build())
-                                .build())
-
-                        // Tab List
-
-                        .group(OptionGroup.createBuilder()
-                                .name(Text.literal("Tab List"))
-                                .option(Option.createBuilder(int.class)
-                                        .name(Text.literal("Max Tab Players"))
-                                        .description(OptionDescription.of(Text.of("Change the maximum number of players that can appear in the tab list. By default, Minecraft has a maximum of 80.")))
-                                        .binding(2, () -> config.maxTabPlayers, newVal -> config.maxTabPlayers = newVal)
-                                        .controller(opt -> IntegerSliderControllerBuilder.create(opt)
-                                                .range(1, 200)
-                                                .step(1))
-                                        .build())
-                                .option(Option.<Color>createBuilder()
-                                        .name(Text.literal("Tab Widget Color"))
-                                        .binding(defaults.tabPlayerListColor, () -> config.tabPlayerListColor, value -> config.tabPlayerListColor = value)
-                                        .customController(opt -> new ColorController(opt, true))
-                                        .build())
-                                .option(Option.createBuilder(float.class)
-                                        .name(Text.literal("Move Tab List Down"))
-                                        .description(OptionDescription.of(Text.of("Moves the tab list down by the specified number of units. Helps prevent tab from overlapping with a bossbar.")))
-                                        .binding(10F, () -> config.moveTabDown, newVal -> config.moveTabDown = newVal)
-                                        .controller(opt -> FloatSliderControllerBuilder.create(opt)
-                                                .valueFormatter(value -> Text.of(String.format("%,.0f", value)))
-                                                .range(0F, 60F)
-                                                .step(1F))
-                                        .build())
-                                .option(Option.createBuilder(boolean.class)
-                                        .name(Text.literal("Move Tab List Below Bossbars"))
-                                        .description(OptionDescription.of(Text.of("Moves the tab list below all bossbars. This will take priority over the \"Move Tab List Down\" setting.")))
-                                        .binding(defaults.moveTabBelowBossBars, () -> config.moveTabBelowBossBars, newVal -> config.moveTabBelowBossBars = newVal)
-                                        .controller(TickBoxControllerBuilder::create)
-                                        .build())
-                                .option(Option.createBuilder(boolean.class)
-                                        .name(Text.literal("Show Numerical Ping"))
-                                        .description(OptionDescription.of(Text.of("Replace the ping icon with a numerical value.")))
-                                        .binding(defaults.showPingInTab, () -> config.showPingInTab, newVal -> config.showPingInTab = newVal)
-                                        .controller(TickBoxControllerBuilder::create)
-                                        .build())
-                                .option(Option.createBuilder(boolean.class)
-                                        .name(Text.literal("Scale Numerical Ping"))
-                                        .description(OptionDescription.of(Text.of("Scales the ping display to make it smaller.")))
-                                        .binding(defaults.scalePingDisplay, () -> config.scalePingDisplay, newVal -> config.scalePingDisplay = newVal)
-                                        .controller(TickBoxControllerBuilder::create)
-                                        .build())
-                                .option(Option.createBuilder(boolean.class)
-                                        .name(Text.literal("Hide Fake Ping"))
-                                        .description(OptionDescription.of(Text.of("Some servers force a ping of 0 or 1 or very high numbers to hide players ping. This will hide the number from being displayed as it is useless.")))
-                                        .binding(defaults.hideFalsePing, () -> config.hideFalsePing, newVal -> config.hideFalsePing = newVal)
-                                        .controller(TickBoxControllerBuilder::create)
-                                        .build())
-                                .option(Option.<Color>createBuilder()
-                                        .name(Text.literal("Ping Between 0 and 75"))
-                                        .binding(defaults.pingColorOne, () -> config.pingColorOne, value -> config.pingColorOne = value)
-                                        .customController(opt -> new ColorController(opt, false))
-                                        .build())
-                                .option(Option.<Color>createBuilder()
-                                        .name(Text.literal("Ping Between 75 and 145"))
-                                        .binding(defaults.pingColorTwo, () -> config.pingColorTwo, value -> config.pingColorTwo = value)
-                                        .customController(opt -> new ColorController(opt, false))
-                                        .build())
-                                .option(Option.<Color>createBuilder()
-                                        .name(Text.literal("Ping Between 145 and 200"))
-                                        .binding(defaults.pingColorThree, () -> config.pingColorThree, value -> config.pingColorThree = value)
-                                        .customController(opt -> new ColorController(opt, false))
-                                        .build())
-                                .option(Option.<Color>createBuilder()
-                                        .name(Text.literal("Ping Between 200 and 300"))
-                                        .binding(defaults.pingColorFour, () -> config.pingColorFour, value -> config.pingColorFour = value)
-                                        .customController(opt -> new ColorController(opt, false))
-                                        .build())
-                                .option(Option.<Color>createBuilder()
-                                        .name(Text.literal("Ping Between 300 and 400"))
-                                        .binding(defaults.pingColorFive, () -> config.pingColorFive, value -> config.pingColorFive = value)
-                                        .customController(opt -> new ColorController(opt, false))
-                                        .build())
-                                .option(Option.<Color>createBuilder()
-                                        .name(Text.literal("Ping Above 400"))
-                                        .binding(defaults.pingColorSix, () -> config.pingColorSix, value -> config.pingColorSix = value)
-                                        .customController(opt -> new ColorController(opt, false))
                                         .build())
                                 .build())
 
@@ -433,28 +318,6 @@ public class OverlayTweaksConfig {
                                         .controller(TickBoxControllerBuilder::create)
                                         .build())
                                 .option(Option.createBuilder(boolean.class)
-                                        .name(Text.literal("Enchantment Glance"))
-                                        .description(OptionDescription.of(Text.of("Shows the enchantments of a held item above the hotbar. This will move the item name tooltip higher if it is not disabled.")))
-                                        .binding(defaults.hotbarEnchantmentGlance, () -> config.hotbarEnchantmentGlance, newVal -> config.hotbarEnchantmentGlance = newVal)
-                                        .controller(TickBoxControllerBuilder::create)
-                                        .build())
-                                .option(Option.<Color>createBuilder()
-                                        .name(Text.literal("Enchantment Glance Color"))
-                                        .binding(defaults.enchantmentGlanceColor, () -> config.enchantmentGlanceColor, value -> config.enchantmentGlanceColor = value)
-                                        .customController(opt -> new ColorController(opt, true))
-                                        .build())
-                                .option(Option.createBuilder(boolean.class)
-                                        .name(Text.literal("Damage Glance"))
-                                        .description(OptionDescription.of(Text.of("Shows the attack damage of a held item above the hotbar.")))
-                                        .binding(defaults.hotbarDamageGlance, () -> config.hotbarDamageGlance, newVal -> config.hotbarDamageGlance = newVal)
-                                        .controller(TickBoxControllerBuilder::create)
-                                        .build())
-                                .option(Option.<Color>createBuilder()
-                                        .name(Text.literal("Damage Glance Color"))
-                                        .binding(defaults.damageGlanceColor, () -> config.damageGlanceColor, value -> config.damageGlanceColor = value)
-                                        .customController(opt -> new ColorController(opt, true))
-                                        .build())
-                                .option(Option.createBuilder(boolean.class)
                                         .name(Text.literal("Keep Hand in Hidden HUD"))
                                         .description(OptionDescription.of(Text.of("Keep your hand/held item in view when hiding hud (pressing F1).")))
                                         .binding(defaults.keepHand, () -> config.keepHand, newVal -> config.keepHand = newVal)
@@ -480,42 +343,6 @@ public class OverlayTweaksConfig {
                                         .build())
                                 .build())
 
-                        // Titles
-
-                        .group(OptionGroup.createBuilder()
-                                .name(Text.literal("Titles"))
-                                .option(Option.createBuilder(boolean.class)
-                                        .name(Text.literal("Disable Titles"))
-                                        .description(OptionDescription.of(Text.of("Remove titles entirely.")))
-                                        .binding(defaults.disableTitles, () -> config.disableTitles, newVal -> config.disableTitles = newVal)
-                                        .controller(TickBoxControllerBuilder::create)
-                                        .build())
-                                .option(Option.createBuilder(float.class)
-                                        .name(Text.literal("Title Scale"))
-                                        .description(OptionDescription.of(Text.of("Set the scale for titles.")))
-                                        .binding(100F, () -> config.titleScale, newVal -> config.titleScale = newVal)
-                                        .controller(opt -> FloatSliderControllerBuilder.create(opt)
-                                                .valueFormatter(value -> Text.of(String.format("%,.0f", value) + "%"))
-                                                .range(0F, 100F)
-                                                .step(1F))
-                                        .build())
-                                .option(Option.createBuilder(boolean.class)
-                                        .name(Text.literal("Automatically Scale Titles"))
-                                        .description(OptionDescription.of(Text.of("Scale titles automatically if they go past the edges of your screen.")))
-                                        .binding(defaults.autoTitleScale, () -> config.autoTitleScale, newVal -> config.autoTitleScale = newVal)
-                                        .controller(TickBoxControllerBuilder::create)
-                                        .build())
-                                .option(Option.createBuilder(float.class)
-                                        .name(Text.literal("Title Opacity"))
-                                        .description(OptionDescription.of(Text.of("Set the opacity for titles.")))
-                                        .binding(100F, () -> config.titleOpacity, newVal -> config.titleOpacity = newVal)
-                                        .controller(opt -> FloatSliderControllerBuilder.create(opt)
-                                                .valueFormatter(value -> Text.of(String.format("%,.0f", value) + "%"))
-                                                .range(0F, 100F)
-                                                .step(1F))
-                                        .build())
-                                .build())
-
                         // Subtitle
 
                         .group(OptionGroup.createBuilder()
@@ -528,83 +355,6 @@ public class OverlayTweaksConfig {
                                 .build())
 
 
-                        .build())
-
-                // Crosshair
-
-                .category(ConfigCategory.createBuilder()
-                        .name(Text.literal("Crosshair"))
-
-                        // General
-
-                        .group(OptionGroup.createBuilder()
-                                .name(Text.literal("General"))
-                                .option(Option.createBuilder(boolean.class)
-                                        .name(Text.literal("Hide in Containers"))
-                                        .description(OptionDescription.of(Text.of("Hides crosshair when a container is opened. Great for containers with translucent backgrounds.")))
-                                        .binding(defaults.hideCrosshairInContainers, () -> config.hideCrosshairInContainers, newVal -> config.hideCrosshairInContainers = newVal)
-                                        .controller(TickBoxControllerBuilder::create)
-                                        .build())
-                                .option(Option.createBuilder(boolean.class)
-                                        .name(Text.literal("Show in Third Person"))
-                                        .description(OptionDescription.of(Text.of("Shows the crosshair when in third person.")))
-                                        .binding(defaults.showCrosshairInPerspective, () -> config.showCrosshairInPerspective, newVal -> config.showCrosshairInPerspective = newVal)
-                                        .controller(TickBoxControllerBuilder::create)
-                                        .build())
-                                .option(Option.createBuilder(boolean.class)
-                                        .name(Text.literal("Always Show in Spectator"))
-                                        .description(OptionDescription.of(Text.of("Always show the crosshair when in spectator mode.")))
-                                        .binding(defaults.showCrosshairInSpectator, () -> config.showCrosshairInSpectator, newVal -> config.showCrosshairInSpectator = newVal)
-                                        .controller(TickBoxControllerBuilder::create)
-                                        .build())
-                                .option(Option.createBuilder(boolean.class)
-                                        .name(Text.literal("Remove Blending"))
-                                        .description(OptionDescription.of(Text.of("Removes color blending on the crosshair, making it always white.")))
-                                        .binding(defaults.removeCrosshairBlending, () -> config.removeCrosshairBlending, newVal -> config.removeCrosshairBlending = newVal)
-                                        .controller(TickBoxControllerBuilder::create)
-                                        .build())
-                                .option(Option.createBuilder(float.class)
-                                        .name(Text.literal("Crosshair Opacity"))
-                                        .description(OptionDescription.of(Text.of("Changes the opacity of the crosshair when \"Remove Crosshair Blending\" is enabled.")))
-                                        .binding(100F, () -> config.crosshairOpacity, newVal -> config.crosshairOpacity = newVal)
-                                        .controller(opt -> FloatSliderControllerBuilder.create(opt)
-                                                .valueFormatter(value -> Text.of(String.format("%,.0f", value) + "%"))
-                                                .range(0F, 100F)
-                                                .step(1F))
-                                        .build())
-                                .build())
-
-                        // Debug Crosshair
-
-                        .group(OptionGroup.createBuilder()
-                                .name(Text.literal("Debug"))
-                                .option(Option.createBuilder(boolean.class)
-                                        .name(Text.literal("Ignore Debug Crosshair"))
-                                        .description(OptionDescription.of(Text.of("Uses the normal crosshair instead of the debug crosshair when F3 is open. Takes priority over \"Always Use Debug Mode\".")))
-                                        .binding(defaults.useNormalCrosshair, () -> config.useNormalCrosshair, newVal -> config.useNormalCrosshair = newVal)
-                                        .controller(TickBoxControllerBuilder::create)
-                                        .build())
-                                .option(Option.createBuilder(boolean.class)
-                                        .name(Text.literal("Always Use Debug Crosshair"))
-                                        .description(OptionDescription.of(Text.of("Uses the debug crosshair instead of the normal crosshair regardless of when F3 is open. Requires \"Ignore Debug Mode\" to be disabled.")))
-                                        .binding(defaults.useDebugCrosshair, () -> config.useDebugCrosshair, newVal -> config.useDebugCrosshair = newVal)
-                                        .controller(TickBoxControllerBuilder::create)
-                                        .build())
-                                .option(Option.createBuilder(boolean.class)
-                                        .name(Text.literal("Fix Debug Crosshair Attack Indicator"))
-                                        .description(OptionDescription.of(Text.of("Due to an oversight, the debug crosshair does not have an attack cooldown indicator. This feature adds it back.")))
-                                        .binding(defaults.fixDebugCooldown, () -> config.fixDebugCooldown, newVal -> config.fixDebugCooldown = newVal)
-                                        .controller(TickBoxControllerBuilder::create)
-                                        .build())
-                                .option(Option.createBuilder(int.class)
-                                        .name(Text.literal("Debug Crosshair Size"))
-                                        .description(OptionDescription.of(Text.of("Changes the size of the crosshair.")))
-                                        .binding(10, () -> config.debugCrosshairSize, newVal -> config.debugCrosshairSize = newVal)
-                                        .controller(opt -> IntegerSliderControllerBuilder.create(opt)
-                                                .range(0, 20)
-                                                .step(1))
-                                        .build())
-                                .build())
                         .build())
 
                 // Effects

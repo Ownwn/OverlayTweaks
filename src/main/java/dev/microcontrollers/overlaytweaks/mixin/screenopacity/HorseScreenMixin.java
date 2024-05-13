@@ -23,6 +23,7 @@ public class HorseScreenMixin {
         RenderSystem.setShaderColor(1F, 1F, 1F, 1F);
     }
 
+    //#if MC >= 1.20.4
     @Inject(method = "drawBackground", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/DrawContext;drawGuiTexture(Lnet/minecraft/util/Identifier;IIII)V"))
     private void invalidArrowOpacityStart(DrawContext context, float delta, int mouseX, int mouseY, CallbackInfo ci) {
         RenderSystem.enableBlend();
@@ -34,4 +35,5 @@ public class HorseScreenMixin {
         RenderSystem.disableBlend();
         RenderSystem.setShaderColor(1F, 1F, 1F, 1F);
     }
+    //#endif
 }

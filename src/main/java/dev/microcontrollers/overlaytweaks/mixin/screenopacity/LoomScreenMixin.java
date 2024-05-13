@@ -7,9 +7,10 @@ import net.minecraft.block.entity.BannerPattern;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.gui.screen.ingame.LoomScreen;
 import net.minecraft.client.util.math.MatrixStack;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NbtCompound;
-import net.minecraft.nbt.NbtList;
+//#if MC <= 1.20.4
+//$$ import net.minecraft.item.ItemStack;
+//$$ import net.minecraft.nbt.NbtCompound;
+//$$ import net.minecraft.nbt.NbtList;
 import net.minecraft.registry.entry.RegistryEntry;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
@@ -37,7 +38,11 @@ public class LoomScreenMixin {
         No changes of note have been made other than adapting to this project
      */
     @Inject(method = "drawBanner", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/util/math/MatrixStack;push()V", shift = At.Shift.AFTER), locals = LocalCapture.CAPTURE_FAILHARD)
-    public void onCreateMatrix(DrawContext context, RegistryEntry<BannerPattern> pattern, int x, int y, CallbackInfo ci, NbtCompound nbtCompound, NbtList nbtList, ItemStack itemStack, MatrixStack matrixStack) {
+    //#if MC >= 1.20.6
+    public void onCreateMatrix(DrawContext context, RegistryEntry<BannerPattern> pattern, int x, int y, CallbackInfo ci, MatrixStack matrixStack) {
+    //#else
+    //$$ public void onCreateMatrix(DrawContext context, RegistryEntry<BannerPattern> pattern, int x, int y, CallbackInfo ci, NbtCompound nbtCompound, NbtList nbtList, ItemStack itemStack, MatrixStack matrixStack) {
+    //#endif
         matrixStack.scale(InvScale.getScale(), InvScale.getScale(), 1F);
     }
 
