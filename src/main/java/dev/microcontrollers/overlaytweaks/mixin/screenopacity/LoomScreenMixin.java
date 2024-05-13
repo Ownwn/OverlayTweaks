@@ -11,6 +11,7 @@ import net.minecraft.client.util.math.MatrixStack;
 //$$ import net.minecraft.item.ItemStack;
 //$$ import net.minecraft.nbt.NbtCompound;
 //$$ import net.minecraft.nbt.NbtList;
+//#endif
 import net.minecraft.registry.entry.RegistryEntry;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
