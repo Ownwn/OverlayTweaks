@@ -1,13 +1,8 @@
 pluginManagement {
 	repositories {
-		maven("https://maven.fabricmc.net/")
 		maven("https://repo.polyfrost.org/releases")
 		mavenCentral()
 		gradlePluginPortal()
-		plugins {
-			val egtVersion = "0.5.1"
-			id("org.polyfrost.multi-version.root") version egtVersion
-		}
 	}
 }
 
@@ -19,7 +14,7 @@ listOf(
 	include(":$version")
 	project(":$version").apply {
 		projectDir = file("versions/$version")
-		buildFileName = "../../build.gradle"
+		buildFileName = "../../build.gradle.kts"
 	}
 }
 

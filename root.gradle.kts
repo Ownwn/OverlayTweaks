@@ -1,7 +1,6 @@
 plugins {
-    kotlin("jvm") version "1.9.10" apply false
-    id("org.polyfrost.multi-version.root")
-    id("com.github.johnrengelman.shadow") version "8.1.1" apply false
+    alias(libs.plugins.pgt.root)
+    alias(libs.plugins.kotlin) apply false
 }
 
 preprocess {

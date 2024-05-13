@@ -1,20 +1,14 @@
 package dev.microcontrollers.overlaytweaks.mixin;
 
 import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
-import com.llamalad7.mixinextras.injector.ModifyReturnValue;
-import com.llamalad7.mixinextras.injector.v2.WrapWithCondition;
-import com.mojang.blaze3d.platform.GlStateManager;
 import com.mojang.blaze3d.systems.RenderSystem;
 import dev.microcontrollers.overlaytweaks.config.OverlayTweaksConfig;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.gui.hud.DebugHud;
 import net.minecraft.client.gui.hud.InGameHud;
-import net.minecraft.client.option.AttackIndicator;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.LivingEntity;
 import net.minecraft.text.Text;
-import net.minecraft.util.Identifier;
 import org.spongepowered.asm.mixin.*;
 import org.spongepowered.asm.mixin.injection.*;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
@@ -28,15 +22,6 @@ public class InGameHudMixin {
     private Text title;
     @Shadow
     private Text subtitle;
-    @Final
-    @Shadow
-    private static Identifier CROSSHAIR_ATTACK_INDICATOR_FULL_TEXTURE;
-    @Final
-    @Shadow
-    private static Identifier CROSSHAIR_ATTACK_INDICATOR_BACKGROUND_TEXTURE;
-    @Final
-    @Shadow
-    private static Identifier CROSSHAIR_ATTACK_INDICATOR_PROGRESS_TEXTURE;
     @Mutable
     @Final
     @Shadow
@@ -111,7 +96,7 @@ public class InGameHudMixin {
     //#if MC >= 1.20.6
     @ModifyExpressionValue(method = "renderTitleAndSubtitle", at = @At(value = "INVOKE", target = "Lnet/minecraft/util/math/MathHelper;clamp(III)I"))
     //#else
-    //$$ @ModifyExpressionValue(method = "renderTitleAndSubtitle", at = @At(value = "INVOKE", target = "Lnet/minecraft/util/math/MathHelper;clamp(III)I"))
+    //$$ @ModifyExpressionValue(method = "render", at = @At(value = "INVOKE", target = "Lnet/minecraft/util/math/MathHelper;clamp(III)I"))
     //#endif
     private int disableTitles(int value) {
         if (OverlayTweaksConfig.CONFIG.instance().disableTitles) return 0;

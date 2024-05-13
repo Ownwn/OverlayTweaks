@@ -21,7 +21,7 @@
     "ScreenMixin",
     "SubtitlesHudMixin",
     //#if MC <= 1.20.4
-    //$$ "TabWidgetNavigationWidgetMixin",
+    //$$ "TabNavigationWidgetMixin",
     //#endif
     "WorldRendererMixin",
     "screenopacity.AbstractFurnaceScreenMixin",

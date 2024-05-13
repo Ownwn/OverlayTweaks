@@ -24,14 +24,28 @@ public class ScreenMixin {
     @Shadow
     public int height;
 
-    @WrapWithCondition(method = "renderInGameBackground", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/DrawContext;fillGradient(IIIIII)V"))
+    @WrapWithCondition(
+            //#if MC <= 1.20.1
+            //$$ method = "renderBackground",
+            //#else
+            method = "renderInGameBackground",
+            //#endif
+            at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/DrawContext;fillGradient(IIIIII)V")
+    )
     private boolean shouldRenderBackground(DrawContext instance, int startX, int startY, int endX, int endY, int colorStart, int colorEnd) {
         return OverlayTweaksConfig.CONFIG.instance().containerOpacity > 0;
     }
 
-    @ModifyArgs(method = "renderInGameBackground", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/DrawContext;fillGradient(IIIIII)V"))
+    @ModifyArgs(
+            //#if MC <= 1.20.1
+            //$$ method = "renderBackground",
+            //#else
+            method = "renderInGameBackground",
+            //#endif
+            at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/DrawContext;fillGradient(IIIIII)V")
+    )
     private void changeContainerBackgroundOpacity(Args args) {
-        args.set(4, withOpacity(args.get(4), Math.max(OverlayTweaksConfig.CONFIG.instance().containerOpacity / 100F - 16/255F, 0)));
+        args.set(4, withOpacity(args.get(4), Math.max(OverlayTweaksConfig.CONFIG.instance().containerOpacity / 100F - 16 / 255F, 0)));
         args.set(5, withOpacity(args.get(5), OverlayTweaksConfig.CONFIG.instance().containerOpacity / 100F));
     }
 
