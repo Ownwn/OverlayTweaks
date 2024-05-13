@@ -33,7 +33,7 @@
 		"overlaytweaks.mixins.json"
 	],
 	"depends": {
-		"fabricloader": ">=0.15.10",
+		"fabricloader": ">=0.14",
 		"minecraft": ">=1.20.5 <=1.20.6",
 		"java": ">=17",
 		"fabric-api": "*",

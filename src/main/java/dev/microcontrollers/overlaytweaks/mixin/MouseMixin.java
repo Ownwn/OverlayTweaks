@@ -24,15 +24,17 @@ public class MouseMixin {
     }
 
     // TODO: Find what changed
-//    @ModifyExpressionValue(method = "onCursorPos", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/util/Window;getScaledWidth()I"))
-//    private int onCursorPosWidth(int originalScaledWidth) {
-//        return (int) (originalScaledWidth / InvScale.getScale());
-//    }
-//
-//    @ModifyExpressionValue(method = "onCursorPos", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/util/Window;getScaledHeight()I"))
-//    private int onCursorPosHeight(int originalScaledHeight) {
-//        return (int) (originalScaledHeight / InvScale.getScale());
-//    }
+    //#if MC <= 1.20.4
+    //$$ @ModifyExpressionValue(method = "onCursorPos", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/util/Window;getScaledWidth()I"))
+    //$$ private int onCursorPosWidth(int originalScaledWidth) {
+    //$$     return (int) (originalScaledWidth / InvScale.getScale());
+    //$$ }
+
+    //$$ @ModifyExpressionValue(method = "onCursorPos", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/util/Window;getScaledHeight()I"))
+    //$$ private int onCursorPosHeight(int originalScaledHeight) {
+    //$$     return (int) (originalScaledHeight / InvScale.getScale());
+    //$$ }
+    //#endif
 
     @ModifyExpressionValue(method = "onMouseScroll", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/util/Window;getScaledWidth()I"))
     private int onMouseScrollWidth(int originalScaledWidth) {

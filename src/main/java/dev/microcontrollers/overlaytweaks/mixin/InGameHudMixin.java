@@ -54,19 +54,27 @@ public class InGameHudMixin {
             this.vignetteDarkness = OverlayTweaksConfig.CONFIG.instance().customVignetteDarknessValue / 100;
     }
 
+    //#if MC >= 1.20.6
     @ModifyArg(method = "renderMiscOverlays", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/hud/InGameHud;renderOverlay(Lnet/minecraft/client/gui/DrawContext;Lnet/minecraft/util/Identifier;F)V", ordinal = 0), index = 2)
+    //#else
+    //$$ @ModifyArg(method = "render", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/hud/InGameHud;renderOverlay(Lnet/minecraft/client/gui/DrawContext;Lnet/minecraft/util/Identifier;F)V", ordinal = 0), index = 2)
+    //#endif
     private float changePumpkinOpacity(float opacity) {
         return OverlayTweaksConfig.CONFIG.instance().pumpkinOpacity / 100F;
     }
 
+    //#if MC >= 1.20.6
     @ModifyArg(method = "renderMiscOverlays", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/hud/InGameHud;renderOverlay(Lnet/minecraft/client/gui/DrawContext;Lnet/minecraft/util/Identifier;F)V", ordinal = 1), index = 2)
+    //#else
+    //$$ @ModifyArg(method = "render", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/hud/InGameHud;renderOverlay(Lnet/minecraft/client/gui/DrawContext;Lnet/minecraft/util/Identifier;F)V", ordinal = 1), index = 2)
+    //#endif
     private float changeFreezingOpacity(float opacity) {
         return opacity * OverlayTweaksConfig.CONFIG.instance().freezingOpacity / 100F;
     }
 
     @Inject(method = "renderSpyglassOverlay", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/DrawContext;drawTexture(Lnet/minecraft/util/Identifier;IIIFFIIII)V", shift = At.Shift.BEFORE))
     private void changeSpyglassOpacityPre(DrawContext context, float scale, CallbackInfo ci) {
-        RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, OverlayTweaksConfig.CONFIG.instance().spyglassOpacity);
+        RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, OverlayTweaksConfig.CONFIG.instance().spyglassOpacity / 100F);
     }
     @Inject(method = "renderSpyglassOverlay", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/DrawContext;drawTexture(Lnet/minecraft/util/Identifier;IIIFFIIII)V", shift = At.Shift.AFTER))
     private void changeSpyglassOpacityPost(DrawContext context, float scale, CallbackInfo ci) {
@@ -83,75 +91,15 @@ public class InGameHudMixin {
         if (OverlayTweaksConfig.CONFIG.instance().removeItemTooltip) ci.cancel();
     }
 
-    @Inject(method = "renderCrosshair", at = @At("HEAD"), cancellable = true)
-    private void removeCrosshairInContainer(DrawContext context, float tickDelta, CallbackInfo ci) {
-        if (MinecraftClient.getInstance().currentScreen != null && OverlayTweaksConfig.CONFIG.instance().hideCrosshairInContainers)
-            ci.cancel();
-    }
-
-    @ModifyExpressionValue(method = "renderCrosshair", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/option/Perspective;isFirstPerson()Z"))
-    private boolean removeFirstPersonCheck(boolean original) {
-        if (OverlayTweaksConfig.CONFIG.instance().showCrosshairInPerspective) return true;
-        else return original;
-    }
-
-    @WrapWithCondition(method = "renderCrosshair", at = @At(value = "INVOKE", target = "Lcom/mojang/blaze3d/systems/RenderSystem;blendFuncSeparate(Lcom/mojang/blaze3d/platform/GlStateManager$SrcFactor;Lcom/mojang/blaze3d/platform/GlStateManager$DstFactor;Lcom/mojang/blaze3d/platform/GlStateManager$SrcFactor;Lcom/mojang/blaze3d/platform/GlStateManager$DstFactor;)V"))
-    private boolean removeCrosshairBlending(GlStateManager.SrcFactor srcFactor, GlStateManager.DstFactor dstFactor, GlStateManager.SrcFactor srcAlpha, GlStateManager.DstFactor dstAlpha) {
-        return !OverlayTweaksConfig.CONFIG.instance().removeCrosshairBlending;
-    }
-
-    @Inject(method = "renderCrosshair", at = @At(value = "INVOKE", target = "Lcom/mojang/blaze3d/systems/RenderSystem;blendFuncSeparate(Lcom/mojang/blaze3d/platform/GlStateManager$SrcFactor;Lcom/mojang/blaze3d/platform/GlStateManager$DstFactor;Lcom/mojang/blaze3d/platform/GlStateManager$SrcFactor;Lcom/mojang/blaze3d/platform/GlStateManager$DstFactor;)V", shift = At.Shift.AFTER))
-    private void changeCrosshairOpacity(DrawContext context, float tickDelta, CallbackInfo ci) {
-        if (OverlayTweaksConfig.CONFIG.instance().removeCrosshairBlending)
-            RenderSystem.setShaderColor(1F, 1F, 1F, OverlayTweaksConfig.CONFIG.instance().crosshairOpacity / 100F);
-    }
-
-    @ModifyArg(method = "renderCrosshair", at = @At(value = "INVOKE", target = "Lcom/mojang/blaze3d/systems/RenderSystem;renderCrosshair(I)V"))
-    private int changeDebugCrosshairSize(int size) {
-        return OverlayTweaksConfig.CONFIG.instance().debugCrosshairSize;
-    }
-
-    @ModifyExpressionValue(method = "renderCrosshair", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/hud/DebugHud;shouldShowDebugHud()Z"))
-    private boolean cancelDebugCrosshair(boolean original) {
-        if (OverlayTweaksConfig.CONFIG.instance().useNormalCrosshair) return false;
-        else if (OverlayTweaksConfig.CONFIG.instance().useDebugCrosshair) return true;
-        return original;
-    }
-
-    @Inject(method = "renderCrosshair", at = @At(value = "INVOKE", target = "Lcom/mojang/blaze3d/systems/RenderSystem;applyModelViewMatrix()V", ordinal = 0))
-    private void showCooldownOnDebug(DrawContext context, float tickDelta, CallbackInfo ci) {
-        RenderSystem.blendFuncSeparate(GlStateManager.SrcFactor.ONE_MINUS_DST_COLOR, GlStateManager.DstFactor.ONE_MINUS_SRC_COLOR, GlStateManager.SrcFactor.ONE, GlStateManager.DstFactor.ZERO);
-        if (!OverlayTweaksConfig.CONFIG.instance().fixDebugCooldown) return;
-        if (this.client.options.getAttackIndicator().getValue() == AttackIndicator.CROSSHAIR) {
-            assert this.client.player != null;
-            float attackCooldownProgress = this.client.player.getAttackCooldownProgress(0.0F);
-            boolean bool = false;
-            if (this.client.targetedEntity != null && this.client.targetedEntity instanceof LivingEntity && attackCooldownProgress >= 1.0F) {
-                bool = this.client.player.getAttackCooldownProgressPerTick() > 5.0F;
-                bool &= this.client.targetedEntity.isAlive();
-            }
-            int height = context.getScaledWindowHeight() / 2 - 7 + 16;
-            int width = context.getScaledWindowWidth() / 2 - 8;
-            if (bool) {
-                context.drawGuiTexture(CROSSHAIR_ATTACK_INDICATOR_FULL_TEXTURE, width, height, 16, 16);
-            } else if (attackCooldownProgress < 1.0F) {
-                int l = (int)(attackCooldownProgress * 17.0F);
-                context.drawGuiTexture(CROSSHAIR_ATTACK_INDICATOR_BACKGROUND_TEXTURE, width, height, 16, 4);
-                context.drawGuiTexture(CROSSHAIR_ATTACK_INDICATOR_PROGRESS_TEXTURE, 16, 4, 0, 0, width, height, l, 4);
-            }
-        }
-        RenderSystem.defaultBlendFunc();
-    }
-
-    @ModifyReturnValue(method = "shouldRenderSpectatorCrosshair", at = @At("RETURN"))
-    private boolean showInSpectator(boolean original) {
-        if (OverlayTweaksConfig.CONFIG.instance().showCrosshairInSpectator) return true;
-        return original;
-    }
-
     @Inject(method = "renderScoreboardSidebar(Lnet/minecraft/client/gui/DrawContext;Lnet/minecraft/scoreboard/ScoreboardObjective;)V", at = @At("HEAD"), cancellable = true)
     private void removeScoreboardInDebug(CallbackInfo ci) {
-        if (OverlayTweaksConfig.CONFIG.instance().hideScoreboardInDebug && client.getDebugHud().shouldShowDebugHud()) ci.cancel();
+        //#if MC >= 1.20.4
+        if (OverlayTweaksConfig.CONFIG.instance().hideScoreboardInDebug && client.getDebugHud().shouldShowDebugHud()) {
+        //#else
+        //$$ if (OverlayTweaksConfig.CONFIG.instance().hideScoreboardInDebug && MinecraftClient.getInstance().options.debugEnabled) {
+        //#endif
+            ci.cancel();
+        }
     }
 
     /*
@@ -160,13 +108,21 @@ public class InGameHudMixin {
         The code has been updated to 1.20 and with several fixes
      */
 
+    //#if MC >= 1.20.6
     @ModifyExpressionValue(method = "renderTitleAndSubtitle", at = @At(value = "INVOKE", target = "Lnet/minecraft/util/math/MathHelper;clamp(III)I"))
+    //#else
+    //$$ @ModifyExpressionValue(method = "renderTitleAndSubtitle", at = @At(value = "INVOKE", target = "Lnet/minecraft/util/math/MathHelper;clamp(III)I"))
+    //#endif
     private int disableTitles(int value) {
         if (OverlayTweaksConfig.CONFIG.instance().disableTitles) return 0;
         else return value;
     }
 
+    //#if MC >= 1.20.6
     @Inject(method = "renderTitleAndSubtitle", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/util/math/MatrixStack;scale(FFF)V", ordinal = 0, shift = At.Shift.AFTER))
+    //#else
+    //$$ @Inject(method = "render", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/util/math/MatrixStack;scale(FFF)V", ordinal = 0, shift = At.Shift.AFTER))
+    //#endif
     private void modifyTitleScale(DrawContext context, float tickDelta, CallbackInfo ci) {
         float titleScale = OverlayTweaksConfig.CONFIG.instance().titleScale / 100;
         // TODO: MCCIsland uses a giant title to black out your screen when switching worlds, so let's keep that. Find a better way to only keep black out
@@ -179,7 +135,11 @@ public class InGameHudMixin {
         context.getMatrices().scale(titleScale, titleScale, titleScale);
     }
 
+    //#if MC >= 1.20.6
     @Inject(method = "renderTitleAndSubtitle", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/util/math/MatrixStack;scale(FFF)V", ordinal = 1, shift = At.Shift.AFTER))
+    //#else
+    //$$ @Inject(method = "render", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/util/math/MatrixStack;scale(FFF)V", ordinal = 1, shift = At.Shift.AFTER))
+    //#endif
     private void modifySubtitleScale(DrawContext context, float tickDelta, CallbackInfo ci) {
         float titleScale = OverlayTweaksConfig.CONFIG.instance().titleScale / 100;
         // TODO: MCCIsland uses a giant title to black out your screen when switching worlds, so let's keep that. Find a better way to only keep black out
@@ -192,7 +152,11 @@ public class InGameHudMixin {
         context.getMatrices().scale(titleScale, titleScale, titleScale);
     }
 
+    //#if MC >= 1.20.6
     @ModifyConstant(method = "renderTitleAndSubtitle", constant = @Constant(intValue = 255, ordinal = 0))
+    //#else
+    //$$ @ModifyConstant(method = "render", constant = @Constant(intValue = 255, ordinal = 3))
+    //#endif
     private int modifyOpacity(int constant) {
         return (int) (OverlayTweaksConfig.CONFIG.instance().titleOpacity / 100 * 255);
     }

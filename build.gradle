@@ -28,19 +28,32 @@ loom {
 }
 
 dependencies { // To change the versions see the gradle.properties file
+	// Mixin Extras because PGT doesn't include it
+	include(implementation(annotationProcessor("io.github.llamalad7:mixinextras-fabric:${mixin_extras_version}")))
+
 	// YACL
-	modImplementation("dev.isxander:yet-another-config-lib:${yacl_version}-fabric")
+	if (mcVersion == 12006)
+		modImplementation("dev.isxander:yet-another-config-lib:3.4.2+1.20.5-fabric")
+	else if (mcVersion == 12004)
+		modImplementation("dev.isxander:yet-another-config-lib:3.4.2+1.20.4-fabric")
+	else if (mcVersion = 12001)
+		modImplementation("dev.isxander:yet-another-config-lib:3.4.2+1.20.1-fabric")
 
 	// Mod Menu
-	modImplementation("com.terraformersmc:modmenu:${project.mod_menu_version}")
-
-//	// Minecraft/Fabric
-//	minecraft "com.mojang:minecraft:${project.minecraft_version}"
-//	mappings "net.fabricmc:yarn:${project.yarn_mappings}:v2"
-//	modImplementation "net.fabricmc:fabric-loader:${project.loader_version}"
+	if (mcVersion == 12006)
+		modImplementation("com.terraformersmc:modmenu:10.0.0-beta.1")
+	else if (mcVersion == 12004)
+		modImplementation("com.terraformersmc:modmenu:9.2.0-beta.2")
+	else if (mcVersion = 12001)
+		modImplementation("com.terraformersmc:modmenu:7.2.2")
 
 	// Fabric API. Required for YACL
-	modImplementation "net.fabricmc.fabric-api:fabric-api:${project.fabric_version}"
+	if (mcVersion = 12006)
+		modImplementation "net.fabricmc.fabric-api:fabric-api:0.98.0+1.20.6"
+	else if (mcVersion = 12004)
+		modImplementation "net.fabricmc.fabric-api:fabric-api:0.97.0+1.20.4"
+	else if (mcVersion = 12001)
+		modImplementation "net.fabricmc.fabric-api:fabric-api:0.92.1+1.20.1"
 
 	// DevAuth. Lets us log in with our own Minecraft account. Useful for testing tab features.
 	modRuntimeOnly("me.djtheredstoner:DevAuth-fabric:${project.devauth_version}")
@@ -54,14 +67,9 @@ processResources {
 	}
 }
 
-tasks.withType(JavaCompile).configureEach {
-	it.options.release = 21
-}
-
-java {
-	sourceCompatibility = JavaVersion.VERSION_21
-	targetCompatibility = JavaVersion.VERSION_21
-}
+//tasks.withType(JavaCompile).configureEach {
+//	it.options.release = 17
+//}
 
 jar {
 	from("LICENSE") {

@@ -20,7 +20,11 @@ public class ItemEntityRendererMixin {
     }
 
     @ModifyReturnValue(method = "getRenderedAmount", at = @At("RETURN"))
+    //#if MC >= 1.20.6
     private static int forceStackAmount(int original) {
+    //#else
+    //$$ private int forceStackAmount(int original) {
+    //#endif
         if (OverlayTweaksConfig.CONFIG.instance().unstackedItems) return 1;
         return original;
     }

@@ -1,7 +1,7 @@
 {
   "required": true,
   "package": "dev.microcontrollers.overlaytweaks.mixin",
-  "compatibilityLevel": "JAVA_21",
+  "compatibilityLevel": "JAVA_17",
   "client": [
     "BossBarHudMixin",
     "BuiltinItemModelRendererMixin",
@@ -20,13 +20,18 @@
     "PotionItemMixin",
     "ScreenMixin",
     "SubtitlesHudMixin",
+    //#if MC <= 1.20.4
+    //$$ "TabWidgetNavigationWidgetMixin",
+    //#endif
     "WorldRendererMixin",
     "screenopacity.AbstractFurnaceScreenMixin",
     "screenopacity.AnvilScreenMixin",
     "screenopacity.BeaconScreenMixin",
     "screenopacity.BrewingStandScreenMixin",
     "screenopacity.CartographyTableScreenMixin",
+    //#if MC >= 1.20.6
     "screenopacity.CrafterScreenMixin",
+    //#endif
     "screenopacity.CraftingScreenMixin",
     "screenopacity.CreativeInventoryScreenMixin",
     "screenopacity.EnchantmentScreenMixin",

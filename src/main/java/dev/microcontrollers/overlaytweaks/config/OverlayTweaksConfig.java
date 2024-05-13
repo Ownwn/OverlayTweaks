@@ -46,6 +46,9 @@ public class OverlayTweaksConfig {
     @SerialEntry public boolean disableScreenDamage = false;
     @SerialEntry public boolean disableHandDamage = false;
     @SerialEntry public boolean disableHandViewSway = false;
+    //#if MC <= 1.20.4
+    @SerialEntry public float tabBackgroundOpacity = 100F;
+    //#endif
     @SerialEntry public float suffocationOverlayBrightness = 10F;
 
     // HUD
@@ -277,13 +280,30 @@ public class OverlayTweaksConfig {
                                         .build())
                                 .build())
 
+                        // GUIs
+
+                        //#if MC <= 1.20.4
+                        //$$ .group(OptionGroup.createBuilder()
+                        //$$    .name(Text.literal("Tab Background"))
+                        //$$    .option(Option.createBuilder(float.class)
+                        //$$            .name(Text.literal("Tab Background Opacity"))
+                        //$$            .description(OptionDescription.of(Text.of("Replaces the black bar background in tab navigation screens. Use 60% for a value similar to Benonardo's standalone mod.")))
+                        //$$            .binding(10F, () -> config.tabBackgroundOpacity, newVal -> config.tabBackgroundOpacity = newVal)
+                        //$$            .controller(opt -> FloatSliderControllerBuilder.create(opt)
+                        //$$                    .valueFormatter(value -> Text.of(String.format("%,.0f", value)))
+                        //$$                    .range(0F, 100F)
+                        //$$                    .step(1F))
+                        //$$            .build())
+                        //$$    .build())
+                        //#endif
+
                         // Suffocation Overlay
 
                         .group(OptionGroup.createBuilder()
-                                .name(Text.literal("Suffocation Overlay Opacity"))
+                                .name(Text.literal("Suffocation Overlay"))
                                 .option(Option.createBuilder(float.class)
                                         .name(Text.literal("Change Suffocation Overlay Brightness"))
-                                        .description(OptionDescription.of(Text.of("Replaces the black bar background in tab navigation screens. Use 60% for a value similar to Benonardo's standalone mod.")))
+                                        .description(OptionDescription.of(Text.of("Change Suffocation Overlay Brightness")))
                                         .binding(10F, () -> config.suffocationOverlayBrightness, newVal -> config.suffocationOverlayBrightness = newVal)
                                         .controller(opt -> FloatSliderControllerBuilder.create(opt)
                                                 .valueFormatter(value -> Text.of(String.format("%,.0f", value)))
