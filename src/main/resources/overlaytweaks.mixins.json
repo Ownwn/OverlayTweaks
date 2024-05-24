@@ -24,7 +24,9 @@
     "screenopacity.BeaconScreenMixin",
     "screenopacity.BrewingStandScreenMixin",
     "screenopacity.CartographyTableScreenMixin",
+    //#if MC >= 1.20.4
     "screenopacity.CrafterScreenMixin",
+    //#endif
     "screenopacity.CraftingScreenMixin",
     "screenopacity.CreativeInventoryScreenMixin",
     "screenopacity.EnchantmentScreenMixin",
