@@ -36,10 +36,11 @@ Contributing software and their licenses can be found at [OPEN_SOURCE_SOFTWARE.m
 - Disable Map Bobbing
 - Disable Screen Damage Tilt
 - Disable Hand Damage Tilt
+- Disable Hand View Sway
 
-#### Tab Background Opacity
+#### Suffocation Overlay
 
-- Change Tab Background Opacity
+- Suffocation Overlay Brightness
 
 ### HUD
 
@@ -62,8 +63,7 @@ Contributing software and their licenses can be found at [OPEN_SOURCE_SOFTWARE.m
 #### Hotbar
 
 - Remove Held Item Name Tooltip
-- Enchantment Glance
-- Damage Glance
+- Keep Hand in Hidden HUD
 
 #### Debug
 
@@ -76,11 +76,6 @@ Contributing software and their licenses can be found at [OPEN_SOURCE_SOFTWARE.m
 - Title Scale
 - Automatically Scale Titles
 - Title Opacity
-
-#### Toasts
-
-- Remove All Toasts
-- Remove Tutorial Toasts
 
 ### Crosshair
 
@@ -110,7 +105,11 @@ Contributing software and their licenses can be found at [OPEN_SOURCE_SOFTWARE.m
 #### World
 
 - Cleaner Night Vision Decay
-- Remove Elder Guardian Jumpscare
+- Cleaner Sky Void Darkness
+- Lightning Bolt Color
+- World Border Color
+- Elder Guardian Opacity
+- Elder Guardian Scale
 - Ridden Horse Opacity
 - Ridden Pig Opacity
 - Ridden Strider Opacity
@@ -120,5 +119,7 @@ Contributing software and their licenses can be found at [OPEN_SOURCE_SOFTWARE.m
 
 - Pumpkin Overlay Opacity
 - Freezing Overlay Opacity
+- Spyglass Overlay Opacity
+- Spyglass Background Color
 - Constant Vignette Darkness
 - Constant Vignette Darkness Value
