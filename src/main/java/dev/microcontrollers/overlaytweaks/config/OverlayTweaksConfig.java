@@ -47,6 +47,8 @@ public class OverlayTweaksConfig {
     @SerialEntry public Color shieldColorMid = new Color(0.75F, 0.37F, 0.2F);
     @SerialEntry public Color shieldColorLow = new Color(1F, 1F, 0F);
     @SerialEntry public boolean disableTotemOverlay = false;
+    @SerialEntry public boolean disableTotemParticles = false;
+    @SerialEntry public float totemScale = 1.0F;
     @SerialEntry public boolean removeWaterOverlay = true;
     @SerialEntry public boolean removeWaterFov = true;
     @SerialEntry public boolean removeFireOverlay = true;
@@ -254,9 +256,23 @@ public class OverlayTweaksConfig {
                                 .name(Text.literal("Totem"))
                                 .option(Option.createBuilder(boolean.class)
                                         .name(Text.literal("Disable Totem Overlay"))
-                                        .description(OptionDescription.of(Text.of("Removes the totem overlay from your screen.")))
+                                        .description(OptionDescription.of(Text.of("Removes the totem overlay animation entirely.")))
                                         .binding(defaults.disableTotemOverlay, () -> config.disableTotemOverlay, newVal -> config.disableTotemOverlay = newVal)
                                         .controller(TickBoxControllerBuilder::create)
+                                        .build())
+                                .option(Option.createBuilder(boolean.class)
+                                        .name(Text.literal("Disable Totem Particles"))
+                                        .description(OptionDescription.of(Text.of("Removes the totem particles when a totem is used.")))
+                                        .binding(defaults.disableTotemParticles, () -> config.disableTotemParticles, newVal -> config.disableTotemParticles = newVal)
+                                        .controller(TickBoxControllerBuilder::create)
+                                        .build())
+                                .option(Option.createBuilder(float.class)
+                                        .name(Text.literal("Totem Scale"))
+                                        .description(OptionDescription.of(Text.of("The scale at which to render the totem overlay animation.")))
+                                        .binding(1F, () -> config.totemScale, newVal -> config.totemScale = newVal)
+                                        .controller(opt -> FloatSliderControllerBuilder.create(opt)
+                                                .range(0.1F, 2F)
+                                                .step(0.1F))
                                         .build())
                                 .build())
 

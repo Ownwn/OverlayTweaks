@@ -20,15 +20,6 @@ Contributing software and their licenses can be found at [OPEN_SOURCE_SOFTWARE.m
 - Container Texture Opacity
 - Container Scale
 
-#### Tab List
-
-- Tab Widget Color
-- Move Tab List Down
-- Move Tab List Below Bossbars
-- Show Numerical Ping
-- Scale Numerical Ping
-- Hide Fake Ping
-
 #### Screen Shake
 
 - Disable Screen Bobbing
@@ -37,6 +28,10 @@ Contributing software and their licenses can be found at [OPEN_SOURCE_SOFTWARE.m
 - Disable Screen Damage Tilt
 - Disable Hand Damage Tilt
 - Disable Hand View Sway
+
+#### Tab Background (1.20.4 and prior only)
+
+- Tab Background Opacity
 
 #### Suffocation Overlay
 
@@ -50,7 +45,14 @@ Contributing software and their licenses can be found at [OPEN_SOURCE_SOFTWARE.m
 - Shield Opacity
 - Color Shield Cooldown
 
+#### Totem
+
+- Disable Totem Overlay
+- Disable Totem Particles
+- Totem Scale
+
 #### Water
+
 - Remove Water Overlay
 - Remove Underwater FOV Change
 
@@ -69,30 +71,6 @@ Contributing software and their licenses can be found at [OPEN_SOURCE_SOFTWARE.m
 
 - Hide Scoreboard in Debug
 - Classic Debug Style
-
-#### Titles
-
-- Disable Titles
-- Title Scale
-- Automatically Scale Titles
-- Title Opacity
-
-### Crosshair
-
-#### General
-
-- Hide in Containers
-- Show in Third Person
-- Always Show in Spectator
-- Remove Blending
-- Crosshair Opacity
-
-#### Debug
-
-- Ignore Debug Crosshair
-- Always Use Debug Crosshair
-- Fix Debug Crosshair Attack Indicator
-- Debug Crosshair Size
 
 ### Effects
 

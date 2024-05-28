@@ -16,21 +16,23 @@ import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.entity.effect.StatusEffects;
 import net.minecraft.item.FilledMapItem;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.Items;
+import org.jetbrains.annotations.Nullable;
 import org.joml.Matrix4f;
 import org.joml.Matrix4fStack;
 import org.objectweb.asm.Opcodes;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
-import org.spongepowered.asm.mixin.injection.At;
-import org.spongepowered.asm.mixin.injection.Inject;
-import org.spongepowered.asm.mixin.injection.ModifyArg;
-import org.spongepowered.asm.mixin.injection.Redirect;
+import org.spongepowered.asm.mixin.injection.*;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.LocalCapture;
+import org.spongepowered.asm.mixin.injection.invoke.arg.Args;
 
 @Mixin(value = GameRenderer.class, priority = 1001)
 public class GameRendererMixin {
     @Shadow private int floatingItemTimeLeft;
+
+    @Shadow @Nullable private ItemStack floatingItem;
 
     @ModifyExpressionValue(method = "getFov", at = @At(value = "INVOKE", target = "Lnet/minecraft/util/math/MathHelper;lerp(DDD)D"))
     private double removeWaterFov(double original) {
@@ -85,7 +87,14 @@ public class GameRendererMixin {
 
     @Inject(method = "renderFloatingItem", at = @At("HEAD"))
     private void changeTotemTime(int scaledWidth, int scaledHeight, float tickDelta, CallbackInfo ci) {
-        if (OverlayTweaksConfig.CONFIG.instance().disableTotemOverlay) this.floatingItemTimeLeft = 0;
+        if (OverlayTweaksConfig.CONFIG.instance().disableTotemOverlay && this.floatingItem != null && this.floatingItem.isOf(Items.TOTEM_OF_UNDYING)) this.floatingItemTimeLeft = 0;
+    }
+
+    @ModifyArgs(method = "renderFloatingItem", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/util/math/MatrixStack;scale(FFF)V"))
+    private void changeTotemScale(Args args) {
+        args.set(0, (float) args.get(0) * OverlayTweaksConfig.CONFIG.instance().totemScale);
+        args.set(1, (float) args.get(1) * OverlayTweaksConfig.CONFIG.instance().totemScale);
+        args.set(2, (float) args.get(2) * OverlayTweaksConfig.CONFIG.instance().totemScale);
     }
 
     /*
